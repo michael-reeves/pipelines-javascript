@@ -11,8 +11,8 @@ variables:
 
 steps:
 - script: |
-    npm install
-    npm test
+    yarn install
+    yarn test
     docker build -f Dockerfile --tag $(dockerId).azurecr.io/$(imageRelease) --tag $(dockerId).azurecr.io/$(imageLatest) .
     docker login -u $(dockerId) -p $pswd $(dockerId).azurecr.io
     docker push $(dockerId).azurecr.io/$(imageRelease)
@@ -31,3 +31,4 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+
