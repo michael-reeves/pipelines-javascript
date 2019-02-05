@@ -4,17 +4,19 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  imageName: 'nodejssample:$(Build.BuildId)'
+  imageName: 'nodejssample'
+  imageLatest: '$(imageName):latest'
+  imageRelease: '$(imageName):$(Build.BuildId)'
   # define two more variables dockerId and dockerPassword in the build pipeline in UI
 
 steps:
 - script: |
     npm install
     npm test
-    docker build -f Dockerfile --tag $(dockerId).azurecr.io/$(imageName) .
-    docker tag image $(dockerId).azurecr.io/$(imageName):latest
+    docker build -f Dockerfile --tag $(dockerId).azurecr.io/$(imageRelease) .
+    docker tag image $(dockerId).azurecr.io/$(imageLatest)
     docker login -u $(dockerId) -p $pswd $(dockerId).azurecr.io
-    docker push $(dockerId).azurecr.io/$(imageName):latest
+    docker push $(dockerId).azurecr.io/$(imageLatest)
   env:
     pswd: $(dockerPassword)
 
